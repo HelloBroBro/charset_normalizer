@@ -42,19 +42,19 @@ jobs:
 
   build-wheels:
     name: Build wheels on ${{ matrix.os }} ${{ matrix.qemu }}
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     needs: pre_flight_check
     strategy:
       matrix:
-        os: [ ubuntu, windows, macos ]
+        os: [ ubuntu-latest, windows-latest, macos-13 ]
         qemu: [ '' ]
         include:
           # Split ubuntu job for the sake of speed-up
-          - os: ubuntu
+          - os: ubuntu-latest
             qemu: aarch64
-          - os: ubuntu
+          - os: ubuntu-latest
             qemu: ppc64le
-          - os: ubuntu
+          - os: ubuntu-latest
             qemu: s390x
     steps:
       - name: Checkout
@@ -81,13 +81,12 @@ jobs:
         run: |
           python -m pip install -U pip wheel setuptools build twine
       - name: Build wheels
-        uses: pypa/cibuildwheel@d4a2945fcc8d13f20a1b99d461b8e844d5fc6e23 # v2.21.1
+        uses: pypa/cibuildwheel@f1859528322d7b29d4493ee241a167807661dfb4 # v2.21.2
         env:
-          #CIBW_BUILD_FRONTEND: "build"
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
           CIBW_ARCHS_MACOS: x86_64 arm64 universal2
           CIBW_ENVIRONMENT: CHARSET_NORMALIZER_USE_MYPYC='1'
           CIBW_BEFORE_BUILD: pip install -r build-requirements.txt
-          #CIBW_CONFIG_SETTINGS: "--build-option=--no-isolation"
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest -c {package} {package}/tests
           CIBW_SKIP: pp* cp36*
@@ -153,7 +152,7 @@ jobs:
         run: |
           tree dist
       - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@897895f1e160c830e369f9779632ebc134688e1b # release/v1
+        uses: pypa/gh-action-pypi-publish@f7600683efdcb7656dec5b29656edb7bc586e597 # release/v1
       - name: Upload dists to GitHub Release
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
