@@ -15,9 +15,9 @@ jobs:
     name: 🎨 Linters
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.11'
       - name: Install dependencies
@@ -25,18 +25,9 @@ jobs:
           python -m pip install -U pip setuptools
           python -m pip install -r dev-requirements.txt
           python -m pip uninstall -y charset-normalizer
-      - name: Type checking (Mypy)
+      - name: Pre-commit checks
         run: |
-          mypy --strict charset_normalizer
-      - name: Import sorting check (isort)
-        run: |
-          isort --check charset_normalizer
-      - name: Code format (Black)
-        run: |
-          black --check --diff --target-version=py37 charset_normalizer
-      - name: Style guide enforcement (Flake8)
-        run: |
-          flake8 charset_normalizer
+          pre-commit run --all
 
   tests:
     name: ✅ Tests
@@ -55,9 +46,9 @@ jobs:
           - "3.13"
 
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -68,7 +59,7 @@ jobs:
           python -m pip uninstall -y charset-normalizer
       - name: Install the package
         run: |
-          python -m build --no-isolation
+          python -m build
           python -m pip install ./dist/*.whl
       - name: Run tests
         run: |
@@ -84,9 +75,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.11'
       - name: Install dependencies
@@ -117,9 +108,9 @@ jobs:
 #    runs-on: ubuntu-latest
 #
 #    steps:
-#      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+#      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 #      - name: Set up Python
-#        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+#        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
 #        with:
 #          python-version: '3.11'
 #      - name: Install dependencies
@@ -150,9 +141,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.11'
       - name: Install dependencies
@@ -201,9 +192,9 @@ jobs:
     env:
       PYTHONIOENCODING: utf8  # only needed for Windows (console IO output encoding)
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -236,9 +227,9 @@ jobs:
       - chardet_bc
 
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.11'
       - name: Install dependencies
